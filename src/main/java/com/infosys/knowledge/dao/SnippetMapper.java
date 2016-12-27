@@ -15,7 +15,7 @@ public interface SnippetMapper {
 	@Insert("insert into snippet(content,tag,description,language,gmt_create) values(#{content},#{tag},#{description},#{language},NOW())")
     boolean save(Snippet snippet);
 	
-	@Select("select * from snippet where tag like concat('%',#{tag},'%')")
+	@Select("select * from snippet where tag like concat('%',#{tag},'%') or language like concat('%',#{tag},'%')")
 	List<Snippet> searchByTag(String tag);
 	
 	@Delete("delete from snippet")
