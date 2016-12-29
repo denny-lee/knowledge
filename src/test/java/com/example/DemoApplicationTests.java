@@ -2,31 +2,48 @@ package com.example;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.infosys.knowledge.Application;
-import com.infosys.knowledge.dao.TestMapper;
+import com.infosys.knowledge.dao.FrameNoticeMapper;
+import com.infosys.knowledge.model.FrameNotice;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ContextConfiguration(classes=Application.class)
 public class DemoApplicationTests {
+	private static final Logger log = LoggerFactory.getLogger(DemoApplicationTests.class);
 
 //	private MockMvc mvc;
 	
 //	@Autowired  
 //    private WebApplicationContext webApplicationConnect; 
-	@Autowired
-	private TestMapper mapper;
+//	@Autowired
+//	private TestMapper mapper;
+	/*@Autowired
+	private FrameNoticeMapper mapper;
 	
 	@Test
-	public void del() {
-		mapper.delete();
-	}
+	public void testColLength() {
+		FrameNotice fn = new FrameNotice();
+		fn.setName("12345678901234567890123456789012345678901234567890");
+		try {
+			mapper.save(fn);
+		} catch(DataIntegrityViolationException e) {
+			log.error("超长"+e.getMessage());
+		}
+	}*/
+	
+//	@Test
+//	public void del() {
+//		mapper.delete();
+//	}
 	
 	/*@Before  
     public void setUp() throws JsonProcessingException {  
