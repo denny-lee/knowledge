@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.infosys.knowledge.dao.FaqMapper;
 import com.infosys.knowledge.dao.FrameNoticeMapper;
+import com.infosys.knowledge.dao.MyTagMapper;
 import com.infosys.knowledge.dao.NotionMapper;
 import com.infosys.knowledge.dao.SnippetMapper;
 import com.infosys.knowledge.model.Faq;
 import com.infosys.knowledge.model.FrameNotice;
+import com.infosys.knowledge.model.MyTag;
 import com.infosys.knowledge.model.Notion;
 import com.infosys.knowledge.model.Snippet;
 
@@ -37,6 +39,8 @@ public class KnowledgeController {
     private NotionMapper notionMapper;
     @Autowired
     private FrameNoticeMapper frameMapper;
+    @Autowired
+    private MyTagMapper myTagMapper;
 
     @RequestMapping(method=RequestMethod.POST, value="/saveSnippet")
     public Map<String, Object> saveSnippet(Snippet snippet) {
@@ -243,5 +247,47 @@ public class KnowledgeController {
     	}
     	
         return resultSet;
+    }
+    
+    @RequestMapping(method=RequestMethod.POST, value="/saveMyTags")
+    public Map<String, Object> saveMyTags(String tag) {
+    	Map<String, Object> result = new HashMap<String, Object>();
+    	if(StringUtils.isEmpty(tag)) {
+    		return null;
+    	}
+    	
+    	MyTag mt = new MyTag();
+    	mt.setTag(tag);
+    	
+    	try {
+    		myTagMapper.save(mt);
+    		result.put("success", true);
+    	} catch(DataIntegrityViolationException dve) {
+    		result.put("success", false);
+    		log.error("save snippet时字段过长：" + dve.getMessage());
+    	}
+    	
+        return result;
+    }
+    
+    @RequestMapping(method=RequestMethod.POST, value="/getMyTags")
+    public List<MyTag> getMyTags() {
+    	List<MyTag> tagList = myTagMapper.getTags();
+        return tagList;
+    }
+    
+    @RequestMapping(method=RequestMethod.POST, value="/countMyTags")
+    public void countMyTags(Long id) {
+    	if(null != id) {
+    		myTagMapper.countPlus(id);
+    	}
+    }
+    
+    @RequestMapping(method=RequestMethod.POST, value="/deleteMyTags")
+    public boolean deleteMyTags(Long id) {
+    	if(null != id) {
+    		return myTagMapper.deleteById(id);
+    	}
+    	return false;
     }
 }
